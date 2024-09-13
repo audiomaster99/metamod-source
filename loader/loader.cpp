@@ -160,13 +160,7 @@ mm_UnloadMetamodLibrary()
 	mm_library = NULL;
 }
 
-#if defined _WIN32
-#define EXPORT extern "C" __declspec(dllexport)
-#elif defined __GNUC__
-#define EXPORT extern "C" __attribute__ ((visibility("default")))
-#endif
-
-EXPORT void *
+SH_EXPORT void *
 CreateInterface(const char *name, int *ret)
 {
 	/* If we've got a VSP bridge, do nothing. */

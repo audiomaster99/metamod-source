@@ -34,6 +34,7 @@
 #include <sh_memory.h>
 #include "utility.h"
 #include "gamedll.h"
+#include "loader.h"
 
 class IServerGameDLL;
 class ISource2ServerConfig;
@@ -784,6 +785,8 @@ mm_GameDllRequest(const char *name, int *ret)
 			lib = gamedll_libs[i];
 			qvi = (QueryValveInterface)mm_GetLibAddress(lib, "CreateInterface");
 			if (qvi == NULL)
+				continue;
+			if (qvi == CreateInterface)
 				continue;
 			ptr = qvi(name, ret);
 			if (ptr != NULL)

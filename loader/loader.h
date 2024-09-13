@@ -76,6 +76,12 @@ typedef void *	HMODULE;
 
 #include "loader_bridge.h"
 
+#if defined _WIN32
+#define SH_EXPORT extern "C" __declspec(dllexport)
+#elif defined __GNUC__
+#define SH_EXPORT extern "C" __attribute__ ((visibility("default")))
+#endif
+
 #define SH_PTRSIZE sizeof(void*)
 
 enum MetamodBackend
@@ -127,6 +133,9 @@ mm_GetGameName(char *buffer, size_t size);
 
 extern MetamodBackend
 mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface serverFactory, const char *game_name);
+
+EXPORT void *
+CreateInterface(const char *name, int *ret);
 
 extern MetamodBackend mm_backend;
 
