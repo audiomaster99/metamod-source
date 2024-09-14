@@ -29,7 +29,7 @@
 #include <metamod_console.h>
 #include <amtl/am-string.h>
 #include <eiface.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <filesystem.h>
 #include <iserver.h>
 

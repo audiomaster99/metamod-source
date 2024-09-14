@@ -27,7 +27,7 @@
 #include <metamod.h>
 #include <metamod_util.h>
 #include <metamod_console.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <filesystem.h>
 #include <tier0/icommandline.h>
 

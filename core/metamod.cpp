@@ -657,7 +657,7 @@ int MetamodSource::FormatIface(char iface[], size_t maxlength)
 
 	for (i = length - 1; i + 1 > 0; i--)
 	{
-		if (!isdigit(iface[i]))
+		if (!V_isdigit(&iface[i]))
 		{
 			if (i != length - 1)
 			{
@@ -739,7 +739,7 @@ void *MetamodSource::VInterfaceMatch(CreateInterfaceFn fn, const char *iface, in
 	{
 		char *ptr = &buffer[len - 1];
 		int digits = 0;
-		while (isdigit(*ptr) && digits <=3)
+		while (V_isdigit(&*ptr) && digits <=3)
 		{
 			*ptr = '\0';
 			digits++;
