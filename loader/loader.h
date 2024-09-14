@@ -134,7 +134,7 @@ mm_GetGameName(char *buffer, size_t size);
 extern MetamodBackend
 mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface serverFactory, const char *game_name);
 
-EXPORT void *
+SH_EXPORT void *
 CreateInterface(const char *name, int *ret);
 
 extern MetamodBackend mm_backend;
