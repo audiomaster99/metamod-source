@@ -4,3 +4,6 @@
 [submodule "hl2sdk-manifests"]
 	path = hl2sdk-manifests
 	url = https://github.com/alliedmodders/hl2sdk-manifests
+[submodule "third_party/sourcesdk"]
+	path = third_party/sourcesdk
+	url = https://github.com/Wend4r/sourcesdk.git
