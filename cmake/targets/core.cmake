@@ -34,7 +34,7 @@ endif()
 
 if(METAMOD_SOURCE2)
 	list(APPEND
-			METAMOD_CORE_SOURCE_FILES
+		METAMOD_CORE_SOURCE_FILES
 
 		${METAMOD_CORE_PROVIDER_SOURCE2_DIR}/provider_source2.cpp
 	)
@@ -47,3 +47,5 @@ else()
 		${METAMOD_CORE_DIR}/vsp_bridge.cpp
 	)
 endif()
+
+set(PROJECT_OUTPUT_NAME "metamod.2.${SOURCESDK_GAME_TARGET}")

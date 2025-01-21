@@ -15,6 +15,7 @@ project(metamod-source
 	LANGUAGES C CXX
 )
 
+set(LOADER_PROJECT_NAME "server")
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
 string(TOUPPER "${PROJECT_NAME}" PROJECT_NAME_UPPER)
 
@@ -85,11 +86,8 @@ include(cmake/sourcesdk.cmake)
 include(cmake/targets/core.cmake)
 include(cmake/targets/loader.cmake)
 
-set(PROJECT_OUTPUT_NAME "metamod.2.${SOURCESDK_GAME_TARGET}")
-
 set(SOURCE_FILES
 	${METAMOD_CORE_SOURCE_FILES}
-	${METAMOD_LOADER_SOURCE_FILES}
 
 	${METAMOD_VERSIONLIB_DIR}/versionlib.cpp
 )
@@ -98,6 +96,7 @@ set(INCLUDE_DIRS
 	${METAMOD_INCLUDE_DIRS}
 )
 
+# The Metamod:Source library.
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
