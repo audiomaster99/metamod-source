@@ -18,8 +18,6 @@ project(metamod-source
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
 string(TOUPPER "${PROJECT_NAME}" PROJECT_NAME_UPPER)
 
-set(PROJECT_OUTPUT_NAME "metamod")
-
 set(PROJECT_AUTHOR "")
 set(PROJECT_DESCRIPTION_FULL "Metamod:Source - C++ Plugin Environment and Detour Library for the Source Engine")
 set(PROJECT_LICENSE "GPLv3")
@@ -86,6 +84,8 @@ include(cmake/platform/shared.cmake)
 include(cmake/sourcesdk.cmake)
 include(cmake/targets/core.cmake)
 include(cmake/targets/loader.cmake)
+
+set(PROJECT_OUTPUT_NAME "metamod.2.${SOURCESDK_GAME_TARGET}")
 
 set(SOURCE_FILES
 	${METAMOD_CORE_SOURCE_FILES}
