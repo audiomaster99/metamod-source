@@ -28,7 +28,7 @@
 
 #if defined _DEBUG
 #define DEBUG2
-#undef _DEBUG
+// #undef _DEBUG
 #endif
 #include <sourcehook.h>
 #include <sh_memfuncinfo.h>
@@ -40,7 +40,7 @@
 #include "metamod_oslink.h"
 #if defined DEBUG2
 #undef DEBUG2
-#define _DEBUG
+// #define _DEBUG
 #endif
 
 using namespace SourceMM;
