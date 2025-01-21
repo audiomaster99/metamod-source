@@ -88,8 +88,9 @@ include(cmake/targets/core.cmake)
 include(cmake/targets/loader.cmake)
 
 set(SOURCE_FILES
-	${METAMOD_CORE_SOURCE_DIRS}
-	${METAMOD_LOADER_SOURCE_DIRS}
+	${METAMOD_CORE_SOURCE_FILES}
+	${METAMOD_LOADER_SOURCE_FILES}
+
 	${METAMOD_VERSIONLIB_DIR}/versionlib.cpp
 )
 
