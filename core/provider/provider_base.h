@@ -26,6 +26,8 @@
 #ifndef _INCLUDE_METAMOD_SOURCE_BASE_PROVIDER_H_
 #define _INCLUDE_METAMOD_SOURCE_BASE_PROVIDER_H_
 
+#include "../metamod_convar.h"
+
 #if defined _DEBUG
 #define DEBUG2
 // #undef _DEBUG
@@ -68,8 +70,10 @@ public: // Must implement
 		int flags) override = 0;
 	virtual const char* GetConVarString(MetamodSourceConVar *convar) override = 0;
 	virtual void SetConVarString(MetamodSourceConVar *convar, const char* str) override = 0;
-	virtual bool RegisterConCommandBase(ConCommandBase* pCommand) override = 0;
-	virtual void UnregisterConCommandBase(ConCommandBase* pCommand) override = 0;
+	virtual bool RegisterConCommand(ProviderConCommand *pCommand) override = 0;
+	virtual bool RegisterConVar(ProviderConVar *pVar) override = 0;
+	virtual void UnregisterConCommand(ProviderConCommand *pCommand) override = 0;
+	virtual void UnregisterConVar(ProviderConVar *pVar) override = 0;
 	virtual bool IsConCommandBaseACommand(ConCommandBase* pCommand) override = 0;
 public: // May implement/override (stubbed)
 	virtual int GetUserMessageCount() override { return -1; }

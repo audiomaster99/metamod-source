@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <cstdint>
+#include <cstdlib>
 #include "loader.h"
 #include "serverplugin.h"
 #include "gamedll.h"
@@ -102,6 +103,7 @@ static const char *backend_names[] =
 	"2.pvkii",
 	"2.mcv",
 	"2.cs2",
+	"2.deadlock",
 };
 
 #if defined _WIN32
@@ -207,46 +209,29 @@ mm_GetGameName(char *buffer, size_t size)
 {
 	if (!mm_GetCommandArgument("-game", buffer, size))
 	{
-		char tier0_path[PLATFORM_MAX_PATH];
-#ifdef _WIN32
-		if (mm_ResolvePath("tier0.dll", tier0_path, sizeof(tier0_path), false))
-#elif defined __linux__
-		if (mm_ResolvePath("libtier0.so", tier0_path, sizeof(tier0_path), false))
-#elif defined __APPLE__
-		if (mm_ResolvePath("libtier0.dylib", tier0_path, sizeof(tier0_path), false))
-#else
-#error unsupported platform
-#endif
+		// Source 2 doesn't ever use -game, so we'll hardcode by app id for now. This same approach
+		// won't work for the few Source 1 games that don't require -game, as S1 initializes Steam
+		// too late (although the env var still still be already set if their is a running Steam client
+		// installed). We previously called GetGameInfoString exported from tier0 to look up the first Mod
+		// dir defined. While that worked for CS2 and Dota 2, Deadlock does not define any Mod paths, solely
+		// relying on Game paths. The function only returns the first path defined, and in the case of S2, where
+		// we can't even set MM:S path with GameBin instead of Game, the first Game path will always be MM:S's
+		// location, rather than the real Game dir
+		char *pszAppId = std::getenv("SteamAppId");
+		if (pszAppId)
 		{
-			char err[1024];
-			void* pTier0 = mm_LoadLibrary(tier0_path, err, sizeof(err));
-			if (pTier0)
+			switch (strtoul(pszAppId, nullptr, 10))
 			{
-#ifdef _WIN32
-				GetGameInfoStringFn func = (GetGameInfoStringFn)mm_GetLibAddress(pTier0, "?GetGameInfoString@@YAPEBDPEBD0PEAD_K@Z");
-#else
-				GetGameInfoStringFn func = (GetGameInfoStringFn)mm_GetLibAddress(pTier0, "_Z17GetGameInfoStringPKcS0_Pcm");
-#endif
-				if (func != nullptr)
-				{
-					static char szTmp[260];
-					strncpy(buffer, func("FileSystem/SearchPaths/Mod", "", szTmp, sizeof(szTmp)), size);
-				}
-				else
-				{
-					mm_LogFatal("Failed to resolve GetGameInfoString in fallback gamedir lookup.");
-				}
-
-				mm_UnloadLibrary(pTier0);
+				case 570ul:
+					strncpy(buffer, "dota", size);
+					break;
+				case 730ul:
+					strncpy(buffer, "csgo", size);
+					break;
+				case 1422450ul:
+					strncpy(buffer, "citadel", size);
+					break;
 			}
-			else
-			{
-				mm_LogFatal("Failed to load tier0 from \"%s\" in fallback gamedir lookup: %s", tier0_path, err);
-			}
-		}
-		else
-		{
-			mm_LogFatal("Failed to resolve tier0 path in fallback gamedir lookup.");
 		}
 	}
 
@@ -284,12 +269,12 @@ mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface ser
 			return MMBackend_BMS;
 		}
 
-		if (mm_FindPattern((void *)engineFactory, " Blade Symphony ", sizeof(" Blade Symphony ") - 1))
+		if (serverFactory("VSERVERTOOLS003", NULL) != NULL)
 		{
 			return MMBackend_Blade;
 		}
 
-		if (mm_FindPattern((void *)engineFactory, "Military Conflict: Vietnam", sizeof("Military Conflict: Vietnam") - 1))
+		if (strcmp(game_name, "vietnam") == 0)
 		{
 			return MMBackend_MCV;
 		}
@@ -397,6 +382,12 @@ mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface ser
 					else if (strcmp(game_name, ".") == 0 && engineFactory("MOCK_ENGINE", NULL))
 					{
 						return MMBackend_Mock;
+					}
+					else if (serverFactory("ServerGameClients005", NULL) != nullptr)
+					{
+						// 2025 version of SDK 2013, or maybe hl1mp, or anything else shaped like those.
+						// We may later make a separate SDK for this branch. For now, they match, we'll hack it
+						return MMBackend_HL2DM;
 					}
 					else
 					{

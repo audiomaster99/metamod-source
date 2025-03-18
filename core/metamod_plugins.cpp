@@ -320,7 +320,9 @@ bool CPluginManager::Retry(PluginId id, char *error, size_t len)
 			}
 			else
 			{
-				//don't really care about the buffer here
+				//Since _Load already queues unload on plugin load failure,
+				//it doesn't removes the plugin from the plugin list nor frees pl
+				//so an actual _Unload() is still required
 				_Unload(pl, true, buffer, sizeof(buffer)-1);
 
 				//We just wasted an id... reclaim it
@@ -400,7 +402,8 @@ struct Unloader : public SourceHook::Impl::UnloadListener
 		if (plugin_->m_UnloadFn != NULL)
 			plugin_->m_UnloadFn();
 
-		dlclose(plugin_->m_Lib);
+		if(plugin_->m_Lib)
+			dlclose(plugin_->m_Lib);
 
 		if (destroy_)
 		{
@@ -799,7 +802,7 @@ PluginIter CPluginManager::_end()
 	return m_Plugins.end();
 }
 
-void CPluginManager::AddPluginCvar(ISmmPlugin *api, ConCommandBase *pCvar)
+void CPluginManager::AddPluginCvar(ISmmPlugin *api, ProviderConVar *pCvar)
 {
 	CPlugin *pl = FindByAPI(api);
 
@@ -811,7 +814,7 @@ void CPluginManager::AddPluginCvar(ISmmPlugin *api, ConCommandBase *pCvar)
 	pl->m_Cvars.push_back(pCvar);
 }
 
-void CPluginManager::AddPluginCmd(ISmmPlugin *api, ConCommandBase *pCmd)
+void CPluginManager::AddPluginCmd(ISmmPlugin *api, ProviderConCommand *pCmd)
 {
 	CPlugin *pl = FindByAPI(api);
 
@@ -823,7 +826,7 @@ void CPluginManager::AddPluginCmd(ISmmPlugin *api, ConCommandBase *pCmd)
 	pl->m_Cmds.push_back(pCmd);
 }
 
-void CPluginManager::RemovePluginCvar(ISmmPlugin *api, ConCommandBase *pCvar)
+void CPluginManager::RemovePluginCvar(ISmmPlugin *api, ProviderConVar *pCvar)
 {
 	CPlugin *pl = FindByAPI(api);
 
@@ -835,7 +838,7 @@ void CPluginManager::RemovePluginCvar(ISmmPlugin *api, ConCommandBase *pCvar)
 	pl->m_Cvars.remove(pCvar);
 }
 
-void CPluginManager::RemovePluginCmd(ISmmPlugin *api, ConCommandBase *pCmd)
+void CPluginManager::RemovePluginCmd(ISmmPlugin *api, ProviderConCommand *pCmd)
 {
 	CPlugin *pl = FindByAPI(api);
 
@@ -849,18 +852,16 @@ void CPluginManager::RemovePluginCmd(ISmmPlugin *api, ConCommandBase *pCmd)
 
 void CPluginManager::UnregAllConCmds(CPlugin *pl)
 {
-	SourceHook::List<ConCommandBase *>::iterator i;
-
 	/* :TODO: */
-	for (i=pl->m_Cvars.begin(); i!=pl->m_Cvars.end(); i++)
+	for (auto i=pl->m_Cvars.begin(); i!=pl->m_Cvars.end(); i++)
 	{
-		g_Metamod.UnregisterConCommandBase(pl->m_Id, (*i) );
+		g_Metamod.UnregisterConVar(pl->m_Id, (*i) );
 	}
 	pl->m_Cvars.clear();
 
-	for (i=pl->m_Cmds.begin(); i!=pl->m_Cmds.end(); i++)
+	for (auto i=pl->m_Cmds.begin(); i!=pl->m_Cmds.end(); i++)
 	{
-		g_Metamod.UnregisterConCommandBase(pl->m_Id, (*i) );
+		g_Metamod.UnregisterConCommand(pl->m_Id, (*i) );
 	}
 	pl->m_Cmds.clear();
 }

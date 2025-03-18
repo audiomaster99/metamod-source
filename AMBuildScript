@@ -121,8 +121,11 @@ class MMSConfig(object):
         '-Wall',
         '-Werror',
         '-Wno-uninitialized',
+        '-Wno-sign-compare',
         '-Wno-unused',
         '-Wno-switch',
+        '-Wno-unknown-pragmas',
+        '-Wno-dangling-else',
         '-msse',
         '-fPIC',
       ]
@@ -365,6 +368,7 @@ BuildScripts = [
 if getattr(builder.options, 'enable_tests', False):
     BuildScripts += [
         'core/sourcehook/test/AMBuilder',
+        'loader/test/AMBuilder',
     ]
 
 if builder.backend == 'amb2':

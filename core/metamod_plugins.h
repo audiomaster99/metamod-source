@@ -35,7 +35,6 @@
 
 #include <interface.h>
 #include <eiface.h>
-#include <convar.h>
 #include <sh_list.h>
 #include <sh_string.h>
 #include <IPluginManager.h>
@@ -90,8 +89,8 @@ public:
 		PluginId m_Source;
 		ISmmPlugin *m_API;
 		HINSTANCE m_Lib;
-		SourceHook::List<ConCommandBase *> m_Cvars;
-		SourceHook::List<ConCommandBase *> m_Cmds;
+		SourceHook::List<ProviderConVar *> m_Cvars;
+		SourceHook::List<ProviderConCommand *> m_Cmds;
 		SourceHook::List<IMetamodListener *> m_Events;
 		METAMOD_FN_UNLOAD m_UnloadFn;
 	};
@@ -111,10 +110,10 @@ public:
 	bool QueryRunning(PluginId id, char *error, size_t maxlength);
 	bool QueryHandle(PluginId id, void **handle);
 
-	void AddPluginCvar(ISmmPlugin *api, ConCommandBase *pCvar);
-	void AddPluginCmd(ISmmPlugin *api, ConCommandBase *pCmd);
-	void RemovePluginCvar(ISmmPlugin *api, ConCommandBase *pCvar);
-	void RemovePluginCmd(ISmmPlugin *api, ConCommandBase *pCmd);
+	void AddPluginCvar(ISmmPlugin *api, ProviderConVar *pCvar);
+	void AddPluginCmd(ISmmPlugin *api, ProviderConCommand *pCmd);
+	void RemovePluginCvar(ISmmPlugin *api, ProviderConVar *pCvar);
+	void RemovePluginCmd(ISmmPlugin *api, ProviderConCommand *pCmd);
 
 	/**
 	 * @brief Finds a plugin by Id
