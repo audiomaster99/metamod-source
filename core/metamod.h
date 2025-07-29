@@ -31,7 +31,7 @@
  * @file sourcemm.h
  */
 
-#include "interface.h"
+#include "interfaces/interfaces.h"
 #include "eiface.h"
 #include "sourcehook/sourcehook_impl.h"
 #include "sourcehook/sourcehook_hookmangen.h"

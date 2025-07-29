@@ -28,7 +28,7 @@
 
 #include "metamod_oslink.h"
 #include "metamod.h"
-#include "interface.h"
+#include "interfaces/interfaces.h"
 #include "eiface.h"
 #include "metamod_version.h"
 #include "metamod_provider.h"
@@ -658,7 +658,7 @@ int MetamodSource::FormatIface(char iface[], size_t maxlength)
 
 	for (i = length - 1; i + 1 > 0; i--)
 	{
-		if (!V_isdigit(&iface[i]))
+		if (!V_isdigit_str(&iface[i]))
 		{
 			if (i != length - 1)
 			{
@@ -740,7 +740,7 @@ void *MetamodSource::VInterfaceMatch(CreateInterfaceFn fn, const char *iface, in
 	{
 		char *ptr = &buffer[len - 1];
 		int digits = 0;
-		while (V_isdigit(&*ptr) && digits <=3)
+		while (V_isdigit_str(&*ptr) && digits <=3)
 		{
 			*ptr = '\0';
 			digits++;

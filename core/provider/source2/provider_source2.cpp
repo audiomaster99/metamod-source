@@ -32,6 +32,7 @@
 #include <keyvalues.h>
 #include <filesystem.h>
 #include <iserver.h>
+#include <tier0/icommandline.h>
 
 
 static Source2Provider g_Source2Provider;

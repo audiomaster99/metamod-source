@@ -33,7 +33,7 @@
  * @file CPlugin.cpp
  */
 
-#include "interface.h"
+#include "interfaces/interfaces.h"
 #include "eiface.h"
 #include "sh_list.h"
 #include "sh_string.h"

@@ -23,6 +23,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <string.h>
+
 #include <cstdio>
 #include <cctype>
 #include <cstring>
@@ -140,14 +142,14 @@ mm_DetectGameInformation()
 		mm_TrimLeft(buffer);
 		mm_TrimRight(buffer);
 
-		if (stricmp(buffer, "SearchPaths") == 0)
+		if (strcasecmp(buffer, "SearchPaths") == 0)
 			search = true;
 
 		if (!search)
 			continue;
 
 		mm_KeySplit(buffer, key, sizeof(key) - 1, val, sizeof(val) - 1);
-		if (stricmp(key, "Game") != 0 && stricmp(key, "GameBin") != 0)
+		if (strcasecmp(key, "Game") != 0 && strcasecmp(key, "GameBin") != 0)
 			continue;
 
 		if (strncmp(val, "|gameinfo_path|", sizeof("|gameinfo_path|") - 1) == 0)
@@ -169,7 +171,7 @@ mm_DetectGameInformation()
 		const char *pRelPath = is_source2 ? "../../" : "";
 		const char *pOSDir = is_source2 ? PLATFORM_SUBDIR_S2 "/" : PLATFORM_SUBDIR_S1;
 		const char *pServerBin = is_source2 ? SERVER_NAME_S2 : SERVER_NAME_S1;
-		if (stricmp(key, "GameBin") == 0)
+		if (strcasecmp(key, "GameBin") == 0)
 			mm_PathFormat(temp_path, sizeof(temp_path), "%s/%s%s%s/%s", lptr, pRelPath, ptr, pOSDir, pServerBin);
 		else if (!ptr[0])
 			mm_PathFormat(temp_path, sizeof(temp_path), "%s/%sbin%s/%s", lptr, pRelPath, pOSDir, pServerBin);
@@ -361,11 +363,11 @@ public:
 
 	virtual InitReturnVal_t Init()
 	{
-		if (!stricmp("citadel", game_name))
+		if (!strcasecmp("citadel", game_name))
 		{
 			mm_backend = MMBackend_Deadlock;
 		}
-		else if (!stricmp("csgo", game_name))
+		else if (!strcasecmp("csgo", game_name))
 		{
 			mm_backend = MMBackend_CS2;
 		}
