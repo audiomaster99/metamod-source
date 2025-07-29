@@ -23,6 +23,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+ #include <csetjmp>
+
 #include "provider_source.h"
 #include <metamod.h>
 #include <metamod_util.h>
