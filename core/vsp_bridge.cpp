@@ -26,7 +26,7 @@
 
 #include "metamod.h"
 #include "metamod_util.h"
-#include "interface.h"
+#include "interfaces/interfaces.h"
 #include "eiface.h"
 #include "iplayerinfo.h"
 #include "loader_bridge.h"

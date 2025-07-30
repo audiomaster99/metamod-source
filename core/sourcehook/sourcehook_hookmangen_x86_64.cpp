@@ -25,7 +25,7 @@
 
 #include "metamod_oslink.h"
 #include "metamod.h"
-#include "interface.h"
+#include "interfaces/interfaces.h"
 #include "eiface.h"
 #include "metamod_version.h"
 #include "metamod_provider.h"

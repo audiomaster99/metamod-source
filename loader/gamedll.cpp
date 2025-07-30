@@ -25,6 +25,11 @@
 
 #include <string.h>
 
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#endif
+
 #include <cstdio>
 #include <cctype>
 #include <cstring>
