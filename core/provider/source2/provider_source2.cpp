@@ -135,8 +135,6 @@ void Source2Provider::Notify_DLLInit_Pre(CreateInterfaceFn engineFactory,
 
 	g_pCVar = icvar;
 
-	ConVar_Register(FCVAR_RELEASE);
-
 	if (gameclients)
 	{
 		SH_ADD_HOOK(IServerGameClients, ClientCommand, gameclients, SH_MEMBER(this, &Source2Provider::Hook_ClientCommand), false);
@@ -281,7 +279,7 @@ const char* Source2Provider::GetConVarString(MetamodSourceConVar *convar)
 	}
 
 	auto &value = reinterpret_cast<CConVar<CUtlString> *>(convar)->Get();
-	return !value.IsEmpty() ? value.Get() : nullptr;
+	return !value.IsEmpty() ? value.String() : nullptr;
 }
 
 void Source2Provider::SetConVarString(MetamodSourceConVar *convar, const char* str)

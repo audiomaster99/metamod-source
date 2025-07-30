@@ -530,6 +530,8 @@ mm_StartupMetamod(bool is_vsp_load)
 #endif
 		"Metamod:Source Base Folder",
 		ConVarFlag_SpOnly);
+
+	ConVar_Register(FCVAR_RELEASE);
 	
 	g_bIsVspBridged = is_vsp_load;
 
