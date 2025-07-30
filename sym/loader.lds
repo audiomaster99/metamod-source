@@ -1,0 +1,6 @@
+{
+	global:
+		CreateInterface;
+		GetGameDllBridge;
+	local: *;
+};
